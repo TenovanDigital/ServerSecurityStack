@@ -1,0 +1,21 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings
+
+title: Home Server Dashboard
+
+headerStyle: boxedWidgets
+
+background:
+  image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+  blur: sm
+  saturate: 75
+  brightness: 75
+  opacity: 50
+
+theme: dark
+palette: slate
+
+layout:
+  - Security:
+  - Maintenance:

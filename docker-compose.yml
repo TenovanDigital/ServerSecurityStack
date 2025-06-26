@@ -1,0 +1,46 @@
+# Usage
+#   Start:          docker compose up
+#   Stop:           docker compose down
+#   Destroy:        docker compose down -v
+
+include:
+  # APPS
+    # TODO: Add your own apps here
+  # CORE
+  - homepage/docker-compose.yml # Dashboard for server home page
+  # SECURITY
+  - authelia/docker-compose.yml # Identity Access Management (IAM) + Authentication
+  - crowdsec/docker-compose.yml # IP Banning + Traffic Monitoring
+  - socket-proxy/docker-compose.yml # Security Enchanced Proxy for Docker Socket
+  - traefik/docker-compose.yml # Reverse Proxy
+  # MAINTENANCE
+  - diun/docker-compose.yml # Docker Image Update Notifier
+  - portainer/docker-compose.yml # Container management
+  - watchtower/docker-compose.yml # Container auto-updator
+
+networks:
+  # If no other networks are defined on the service, it will be in "default" network by default
+  crowdsec:
+    driver: bridge
+  default:
+    driver: bridge
+  diun:
+    driver: bridge
+  grafana:
+    driver: bridge
+  homepage:
+    driver: bridge
+  socket-proxy:
+    name: socket-proxy
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.91.0/24
+  traefik:
+    name: traefik
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+  watchtower:
+    driver: bridge

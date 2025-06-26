@@ -1,0 +1,50 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./acme.json:/etc/traefik/acme.json
+      - ./config.yml:/config.yml:ro
+      - ./logs:/var/log/traefik
+    networks:
+      crowdsec:
+      diun:
+      homepage:
+      socket-proxy:
+      traefik:
+        ipv4_address: 192.168.90.254 # Static IP
+    depends_on:
+      crowdsec:
+        condition: service_started
+      bouncer-traefik:
+        condition: service_healthy
+      authelia:
+        condition: service_healthy
+    labels:
+      - "crowdsec.enable=true"
+      - "crowdsec.labels.type=traefik"
+      - "diun.enable=true"
+      - "homepage.group=Security"
+      - "homepage.name=Traefik"
+      - "homepage.icon=traefik.png"
+      - "homepage.href=https://traefik.${DOMAIN}"
+      - "homepage.description=Reverse proxy"
+      - "homepage.widget.type=traefik"
+      - "homepage.widget.url=http://traefik:8080"
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=chain-secure-ip@file"
+    security_opt:
+      - no-new-privileges:true

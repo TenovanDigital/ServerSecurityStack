@@ -1,0 +1,90 @@
+http:
+  middlewares:
+    authelia:
+      forwardauth:
+        address: http://authelia:9091/api/verify?rd=https://auth.example.com # TODO: Update to your domain
+        trustForwardHeader: true
+        authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
+    crowdsec-bouncer:
+      forwardauth:
+        address: http://bouncer-traefik:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+    ip-whitelist:
+      ipAllowList:
+        sourceRange:
+          - 0.0.0.0/24 # TODO: Update to your desired IP Whitelist
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+    secure-headers:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+        accessControlMaxAge: 100
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        stsSeconds: 63072000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        # forceSTSHeader: true # This is a good thing but it can be tricky. Enable after everything works.
+        customFrameOptionsValue: SAMEORIGIN # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "same-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()"
+        customResponseHeaders:
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex," # disable search engines from indexing home server
+          server: "" # hide server info from visitors
+    api-headers:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - OPTIONS
+        accessControlMaxAge: 100
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        stsSeconds: 63072000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        customFrameOptionsValue: SAMEORIGIN
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "no-referrer" # for APIs, minimize referrer information
+        permissionsPolicy: "none" # APIs usually don’t need access to browser features
+        customResponseHeaders:
+          server: "" # hide server info from API responses
+    chain-secure:
+      chain:
+        middlewares:
+          - crowdsec-bouncer
+          - rate-limit
+          - secure-headers
+          - authelia
+    chain-secure-ip:  # This will require whitelisted IP addresses, if specified. Otherwise this is identical to chain-secure.
+      chain:
+        middlewares:
+          - ip-whitelist
+          - crowdsec-bouncer
+          - rate-limit
+          - secure-headers
+          - authelia
+    chain-no-auth:
+      chain:
+        middlewares:
+          - crowdsec-bouncer
+          - rate-limit
+          - secure-headers
+    chain-api:
+      chain:
+        middlewares:
+          - crowdsec-bouncer
+          - rate-limit
+          - api-headers
+          - authelia

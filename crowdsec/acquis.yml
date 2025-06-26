@@ -1,0 +1,3 @@
+source: docker
+docker_host: tcp://socket-proxy:2375
+use_container_labels: true

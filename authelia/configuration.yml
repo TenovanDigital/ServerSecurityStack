@@ -1,0 +1,90 @@
+---
+###############################################################
+#                   Authelia configuration                    #
+###############################################################
+
+server:
+  address: 'tcp://:9091'
+
+theme: 'dark'
+
+log:
+  level: 'debug'
+  format: json
+  file_path: "/var/log/authelia/authelia.log"
+  keep_stdout: true
+
+totp: # Time-based One-Time Password
+  issuer: '{{ env "DOMAIN" }}' # Might need to be authelia.com
+  period: 30
+  digits: 6
+  algorithm: 'sha1'
+  skew: 1
+
+authentication_backend:
+  file:
+    path: '/config/users_database.yml'
+    password:
+      algorithm: 'argon2id'
+      iterations: 3
+      key_length: 32
+      salt_length: 16
+      parallelism: 4
+      memory: 256
+
+password_policy:
+  ## The standard policy allows you to tune individual settings manually.
+  standard:
+    enabled: false
+    min_length: 8
+    max_length: 0
+    require_uppercase: true
+    require_lowercase: true
+    require_number: true
+    require_special: true
+  ## zxcvbn is a well known and used password strength algorithm. It does not have tunable settings.
+  zxcvbn:
+    enabled: false
+    min_score: 3
+
+access_control:
+  default_policy: 'deny'
+  rules:
+    ## bypass rule
+    - domain:
+      - 'auth.{{ env "DOMAIN" }}'
+      policy: 'bypass'
+    ## two factor login - catch all
+    - domain:
+      - '{{ env "DOMAIN" }}'
+      - '*.{{ env "DOMAIN" }}'
+      policy: 'two_factor'
+
+session:
+  name: 'authelia_session'
+  expiration: '1h'
+  inactivity: '5m'
+  remember_me: '1M'
+  cookies:
+    - domain: '{{ env "DOMAIN" }}'
+      authelia_url: 'https://auth.{{ env "DOMAIN" }}'
+      same_site: 'lax'
+
+regulation:
+  max_retries: 3
+  find_time: '2m'
+  ban_time: '30m'
+
+storage:
+  local:
+    path: '/config/db.sqlite3'
+
+notifier:
+  smtp:
+    address: 'smtp://{{ env "EMAIL_SERVER" }}:{{ env "EMAIL_SERVER_PORT" }}'
+    username: '{{ env "EMAIL_SERVER_USER" }}'
+    password: '{{ env "EMAIL_SERVER_PASSWORD" }}'
+    sender: 'Authelia <{{ env "EMAIL_FROM" }}>'
+    identifier: '{{ env "DOMAIN" }}'
+    subject: "[Authelia] {title}"
+...

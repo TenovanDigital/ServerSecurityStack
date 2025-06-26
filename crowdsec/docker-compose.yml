@@ -1,0 +1,56 @@
+services:
+  crowdsec:
+    container_name: crowdsec
+    image: crowdsecurity/crowdsec:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DOCKER_HOST: tcp://socket-proxy:2375
+      GID: "${GID-1000}"
+      COLLECTIONS: "crowdsecurity/traefik LePresidente/authelia" # crowdsecrity/http-cve
+    volumes:
+      - ./acquis.yml:/etc/crowdsec/acquis.yaml
+      - ./db:/var/lib/crowdsec/data/
+      - ./config:/etc/crowdsec/
+    networks:
+      - crowdsec
+      - diun
+      - homepage
+      - socket-proxy
+      - traefik
+    labels:
+      - "diun.enable=true"
+      - "homepage.group=Security"
+      - "homepage.name=CrowdSec"
+      - "homepage.icon=crowdsec.png"
+      - "homepage.href=https://www.crowdsec.net/"
+      - "homepage.description=Traffic monitoring"
+      - "homepage.widget.type=crowdsec"
+      - "homepage.widget.url=http://crowdsec:8080"
+      - "homepage.widget.username=${CROWDSEC_API_USERNAME}"
+      - "homepage.widget.password=${CROWDSEC_API_PASSWORD}"
+    depends_on:
+      - socket-proxy
+    healthcheck:
+      test: ["CMD", "cscli", "version"]
+    security_opt:
+      - no-new-privileges:true
+
+  bouncer-traefik:
+    container_name: bouncer-traefik
+    image: docker.io/fbonalair/traefik-crowdsec-bouncer:latest
+    restart: unless-stopped
+    environment:
+      CROWDSEC_BOUNCER_API_KEY: "${CROWDSEC_BOUNCER_API_KEY}"
+      CROWDSEC_AGENT_HOST: crowdsec:8080
+    networks:
+      - crowdsec
+      - diun
+      - traefik
+    labels:
+      - "diun.enable=true"
+    depends_on:
+      - crowdsec
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,35 @@
+# Based on: https://github.com/gethomepage/homepage/discussions/3256
+
+services:
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - HOMEPAGE_ALLOWED_HOSTS=${DOMAIN},${STATIC_IP}:3000
+    volumes:
+      - ./config:/app/config
+      - ./images:/app/public/images
+      - ./icons:/app/public/icons
+    networks:
+      - homepage
+      - socket-proxy
+      - traefik
+      - watchtower
+    depends_on:
+      - socket-proxy
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.homepage.entrypoints=websecure"
+      - "traefik.http.routers.homepage.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.homepage.middlewares=chain-secure-ip@file"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+    security_opt:
+      - no-new-privileges:true
