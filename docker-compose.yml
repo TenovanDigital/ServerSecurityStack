@@ -26,8 +26,6 @@ networks:
     driver: bridge
   diun:
     driver: bridge
-  grafana:
-    driver: bridge
   homepage:
     driver: bridge
   socket-proxy:
