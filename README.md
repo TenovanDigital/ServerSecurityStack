@@ -72,6 +72,7 @@ This repository contains the complete Docker Compose stack for server security, 
 - Installing and configuring Uncomplicated Firewall (UFW)
 - Generating Authelia encryption secrets
 - Adding Traefik as a CrowdSec bouncer
+- Updating Traefik Config (See "# TODO:" comments)
 - Getting various api keys / access tokens for everything to report to Homepage
 
 For a walkthrough setting all these up, please refer to our YouTube tutorial series:
