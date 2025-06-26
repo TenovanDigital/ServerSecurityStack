@@ -87,4 +87,36 @@ notifier:
     sender: 'Authelia <{{ env "EMAIL_FROM" }}>'
     identifier: '{{ env "DOMAIN" }}'
     subject: "[Authelia] {title}"
+
+###############################################################
+#                OpenID Connect Configuration                 #
+###############################################################
+# Example Client Credentials using OIDC
+# Only uncomment if you plan to use OIDC
+
+# identity_providers:
+#   oidc:
+#     jwks:
+#       # docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd)":/keys authelia/authelia:latest authelia crypto pair rsa generate --directory /keys
+#       - key: {{ secret "/config/secrets/oidc.jwks.key" | mindent 10 "|" | msquote }}
+#     cors:
+#       endpoints:
+#         - 'token'
+#         - 'userinfo'
+#       allowed_origins:
+#         - 'https://n8n.{{ env "DOMAIN" }}'
+#     clients:
+#       - client_id: '{{ env "N8N_CLIENT_ID" }}'  # Random 100-character alphanumeric string. See: https://www.authelia.com/configuration/identity-providers/openid-connect/clients/#client_id
+#         client_name: 'n8n'
+#         client_secret: '{{ env "N8N_CLIENT_SECRET_HASH" }}'  # Hashed client secret. See: https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
+#         redirect_uris:
+#           - 'https://n8n.{{ env "DOMAIN" }}/webhook'  # client_credentials doesn't use any redirects, but this is an Authelia required field, thus the placeholder.
+#         audience:
+#           - 'n8n.{{ env "DOMAIN" }}'
+#         scopes:
+#           - 'api'
+#         grant_types:
+#           - 'client_credentials'
+#         requested_audience_mode: 'implicit'  # Automatically includes permitted audiences in the token
+#         access_token_signed_response_alg: 'RS256'
 ...

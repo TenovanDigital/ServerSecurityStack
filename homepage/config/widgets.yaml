@@ -1,6 +1,6 @@
 ---
 # For configuration options and examples, please see:
-# https://gethomepage.dev/configs/services-widgets
+# https://gethomepage.dev/widgets/
 
 - datetime:
     text_size: 2x1
