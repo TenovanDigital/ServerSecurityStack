@@ -25,7 +25,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: ${TRAEFIK_SSL_EMAIL}
+      email: email@example.com # TODO: Replace with your email
       storage: /etc/traefik/acme.json
       tlsChallenge: {}
 
