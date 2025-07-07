@@ -30,3 +30,5 @@ services:
       - socket-proxy
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+    security_opt:
+      - no-new-privileges:true
