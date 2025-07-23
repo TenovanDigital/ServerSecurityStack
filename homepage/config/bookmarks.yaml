@@ -2,3 +2,12 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/bookmarks
 
+- Server Security:
+    - YouTube:
+        - icon: youtube.png
+          href: https://youtube.com/playlist?list=PLTZ_YGxx-Igtf6L-2AfQ-dhkpXeR5aN2N&si=5EMpcQ-qIkOdptKM
+          description: YouTube - Server Security Series
+    - Github:
+        - icon: github.png
+          href: https://github.com/TenovanDigital/ServerSecurityStack
+          description: GitHub - ServerSecurityStack

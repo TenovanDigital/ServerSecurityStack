@@ -1,7 +1,7 @@
 services:
   portainer:
     container_name: portainer
-    image: portainer/portainer-ce:latest # Use portainer-ee if you have a Business Edition license key
+    image: portainer/portainer-ce:latest # Use portainer-be if you have a Business Edition license key
     command: -H tcp://socket-proxy:2375 # Docker Socket Proxy
     restart: unless-stopped
     ports:
@@ -26,7 +26,7 @@ services:
       - "homepage.description=Container management"
       - "homepage.widget.type=portainer"
       - "homepage.widget.url=http://portainer:9000"
-      - "homepage.widget.env=1"
+      - "homepage.widget.env=${PORTAINER_ENVIRONMENT}"
       - "homepage.widget.key=${PORTAINER_API_KEY}"
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=websecure"
