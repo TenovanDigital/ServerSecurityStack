@@ -23,9 +23,7 @@ services:
       # - N8N_CLIENT_ID=${N8N_CLIENT_ID}
       # - N8N_CLIENT_SECRET_HASH=${N8N_CLIENT_SECRET_HASH}
     volumes:
-      - ./configuration.yml:/config/configuration.yml
-      - ./users_database.yml:/config/users_database.yml
-      - ./secrets:/config/secrets
+      - .:/config
       - ./logs:/var/log/authelia
     networks:
       - crowdsec
