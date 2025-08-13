@@ -42,5 +42,5 @@ homepage/icons/crafty.png
 
 # Traefik
 traefik/logs/
-#traefik/acme.json
-#traefik/acme-staging.json
+traefik/acme.json
+traefik/acme-staging.json
