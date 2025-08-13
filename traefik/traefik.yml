@@ -13,8 +13,6 @@ entryPoints:
   websecure:
     address: ":443"
 
-serversTransport:
-  insecureSkipVerify: true
 providers:
   docker:
     endpoint: "tcp://socket-proxy:2375"
@@ -28,11 +26,15 @@ certificatesResolvers:
       email: email@example.com # TODO: Replace with your email
       storage: /etc/traefik/acme.json
       tlsChallenge: {}
+  letsencrypt-staging:
+    acme:
+      email: email@example.com # TODO: Replace with your email
+      storage: /etc/traefik/acme-staging.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      tlsChallenge: {}
 
 log:
   level: "INFO"
   filePath: "/var/log/traefik/traefik.log"
   format: json
 accessLog: {}
-  # filePath: "/var/log/traefik/access.log"
-  # format: json

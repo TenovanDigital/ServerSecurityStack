@@ -67,7 +67,7 @@ http:
           - rate-limit
           - secure-headers
           - authelia
-    chain-secure-ip:  # This will require whitelisted IP addresses, if specified. Otherwise this is identical to chain-secure.
+    chain-secure-ip:  # This will require whitelisted IP addresses.
       chain:
         middlewares:
           - ip-whitelist

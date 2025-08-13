@@ -1,0 +1,46 @@
+# Environment files
+.env
+*.env
+*env.*
+!.env.example
+
+# Docker artifacts
+/docker-data
+/volumes
+/tmp
+
+# Logs
+*.log
+
+# IDE specific files
+.idea/
+.vscode/
+
+# OS files
+*.swp
+*.swo
+*._*
+.DS_Store
+
+# Authelia
+authelia/logs/
+authelia/secrets/
+authelia/db.sqlite3
+authelia/users_database.yml
+
+# CrowdSec
+crowdsec/config/
+crowdsec/db/
+
+# DIUN
+diun/data
+
+# Homepage
+homepage/config/logs/
+homepage/icons/conduit.png
+homepage/icons/crafty.png
+
+# Traefik
+traefik/logs/
+#traefik/acme.json
+#traefik/acme-staging.json

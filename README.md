@@ -84,6 +84,9 @@ For a walkthrough setting all these up, please refer to our YouTube tutorial ser
 If you prefer a more streamlined and automated process, consider using **Citadel**, our automated setup script. Citadel handles the tedious configuration steps for you, reducing errors and saving time. All you need to do is:
 - Complete a few initial configurations
 - Create Portainer Access Token for Homepage to use (Couldn't automate this)
+- Import CrowdSec Cyber Threat Insights dashboard into Grafana (Couldn't automate this)
+
+Plus Citadel sets up a bonus Grafana dashboard for CrowdSec that is not included in this repository. While you'll have to do the final import, Citadel sets up everything the dashboard needs for you.
 
 #### Learn More About Citadel:
 <a href="https://go.digital.tenovan.com/citadel">Citadel: Your Fortress for Home Server Security</a>

@@ -12,6 +12,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik.yml:/traefik.yml:ro
       - ./acme.json:/etc/traefik/acme.json
+      - ./acme-staging.json:/etc/traefik/acme-staging.json
       - ./config.yml:/config.yml:ro
       - ./logs:/var/log/traefik
     networks:

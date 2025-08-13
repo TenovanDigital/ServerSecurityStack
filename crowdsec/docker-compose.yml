@@ -8,7 +8,7 @@ services:
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
       GID: "${GID-1000}"
-      COLLECTIONS: "crowdsecurity/traefik LePresidente/authelia" # crowdsecrity/http-cve
+      COLLECTIONS: "crowdsecurity/traefik LePresidente/authelia"
     volumes:
       - ./acquis.yml:/etc/crowdsec/acquis.yaml
       - ./db:/var/lib/crowdsec/data/
@@ -18,7 +18,8 @@ services:
       - diun
       - homepage
       - socket-proxy
-      - traefik
+    depends_on:
+      - socket-proxy
     labels:
       - "diun.enable=true"
       - "homepage.group=Security"
@@ -30,8 +31,6 @@ services:
       - "homepage.widget.url=http://crowdsec:8080"
       - "homepage.widget.username=${CROWDSEC_API_USERNAME}"
       - "homepage.widget.password=${CROWDSEC_API_PASSWORD}"
-    depends_on:
-      - socket-proxy
     healthcheck:
       test: ["CMD", "cscli", "version"]
     security_opt:
@@ -48,9 +47,9 @@ services:
       - crowdsec
       - diun
       - traefik
-    labels:
-      - "diun.enable=true"
     depends_on:
       - crowdsec
+    labels:
+      - "diun.enable=true"
     security_opt:
       - no-new-privileges:true

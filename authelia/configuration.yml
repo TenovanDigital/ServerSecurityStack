@@ -92,13 +92,18 @@ notifier:
 #                OpenID Connect Configuration                 #
 ###############################################################
 # Example Client Credentials using OIDC
-# Only uncomment if you plan to use OIDC
-
+#
+# To enable OIDC:
+# 1. Uncomment the entire identity_providers section below
+# 2. Remove the '#' from the line starting with "- key:"
+# 3. Uncomment OIDC environment variables in the docker-compose.yml file.
+# 4. Ensure your OIDC JWKS key file exists at "/config/secrets/oidc.jwks.key"
+#
 # identity_providers:
 #   oidc:
 #     jwks:
-#       # docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd)":/keys authelia/authelia:latest authelia crypto pair rsa generate --directory /keys
-#       - key: {{ secret "/config/secrets/oidc.jwks.key" | mindent 10 "|" | msquote }}
+# # Remove this ↓ to enable template syntax for the key. Disabled to stop Authelia template parser from crashing when this section is commented out.
+#       - key: {#{ secret "/config/secrets/oidc.jwks.key" | mindent 10 "|" | msquote }}
 #     cors:
 #       endpoints:
 #         - 'token'
@@ -119,4 +124,3 @@ notifier:
 #           - 'client_credentials'
 #         requested_audience_mode: 'implicit'  # Automatically includes permitted audiences in the token
 #         access_token_signed_response_alg: 'RS256'
-...
