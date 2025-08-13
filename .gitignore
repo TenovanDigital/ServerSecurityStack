@@ -37,8 +37,6 @@ diun/data
 
 # Homepage
 homepage/config/logs/
-homepage/icons/conduit.png
-homepage/icons/crafty.png
 
 # Traefik
 traefik/logs/
