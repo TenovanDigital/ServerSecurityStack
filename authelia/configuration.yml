@@ -33,28 +33,28 @@ authentication_backend:
       memory: 256
 
 password_policy:
-  ## The standard policy allows you to tune individual settings manually.
+  # The standard policy allows you to tune individual settings manually.
   standard:
-    enabled: false
+    enabled: false # TODO: Choose ONE policy to enable, not both.
     min_length: 8
     max_length: 0
     require_uppercase: true
     require_lowercase: true
     require_number: true
     require_special: true
-  ## zxcvbn is a well known and used password strength algorithm. It does not have tunable settings.
+  # zxcvbn is a well known and used password strength algorithm. It does not have tunable settings.
   zxcvbn:
-    enabled: false
+    enabled: false # TODO: Choose ONE policy to enable, not both.
     min_score: 3
 
 access_control:
   default_policy: 'deny'
   rules:
-    ## bypass rule
+    # bypass rule
     - domain:
       - 'auth.{{ env "DOMAIN" }}'
       policy: 'bypass'
-    ## two factor login - catch all
+    # two factor login - catch all
     - domain:
       - '{{ env "DOMAIN" }}'
       - '*.{{ env "DOMAIN" }}'
