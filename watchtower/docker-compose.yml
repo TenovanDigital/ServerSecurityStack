@@ -9,7 +9,7 @@ services:
       - DOCKER_HOST=tcp://socket-proxy:2375
       - TZ=${TZ}
       - WATCHTOWER_CLEANUP=true # Removes old images after update
-      - "WATCHTOWER_SCHEDULE=0 18 * * *" # Updates at 6 PM daily
+      - "WATCHTOWER_SCHEDULE=0 0 18 * * *" # Updates at 6 PM daily (Uses 6-field cron schedule, not the traditional 5-field)
       - WATCHTOWER_LABEL_ENABLE=true # Updates only labeled containers
       - WATCHTOWER_HTTP_API_METRICS=true
       - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_API_KEY}
